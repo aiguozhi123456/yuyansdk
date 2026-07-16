@@ -1,11 +1,15 @@
 package com.yuyan.imemodule.ui.activity
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
@@ -25,6 +29,8 @@ open class SettingsActivity : AppCompatActivity() {
 
     private val viewModel: SettingsViewModel by viewModels()
     private lateinit var navController: NavController
+    private val requestRecordAudioPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +82,7 @@ open class SettingsActivity : AppCompatActivity() {
             navController.navigate(R.id.action_settingsFragment_to_privacyPolicyFragment)
             return
         }
+        requestRecordAudioPermission()
         if (SetupActivity.shouldShowUp()) {
             startActivity<SetupActivity>()
         }
@@ -86,6 +93,7 @@ open class SettingsActivity : AppCompatActivity() {
             R.id.privacy_policy_sure -> {
                 navController.navigateUp()
                 AppPrefs.getInstance().internal.privacyPolicySure.setValue(true)
+                requestRecordAudioPermission()
                 if (SetupActivity.shouldShowUp()) {
                     startActivity<SetupActivity>()
                 }
@@ -93,6 +101,14 @@ open class SettingsActivity : AppCompatActivity() {
             R.id.privacy_policy_cancel ->{
                 navController.navigateUp()
             }
+        }
+    }
+
+    private fun requestRecordAudioPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            requestRecordAudioPermission.launch(Manifest.permission.RECORD_AUDIO)
         }
     }
 }
