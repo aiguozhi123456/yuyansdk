@@ -11,6 +11,9 @@ import java.util.Objects
  */
 open class SoftKey(var code: Int = 0, var label: String = "", var labelSmall: String = "", var keyMnemonic: String = ""){
 
+    /** 下滑手势触发的按键码，0 表示无 */
+    var slideDownCode: Int = 0
+
     /** 键盘上下左右位置百分比 ，mLeft = (int) (mLeftF * skbWidth);  */
     var mLeftF = -1f
     var mTopF = -1f

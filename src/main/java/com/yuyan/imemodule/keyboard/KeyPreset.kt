@@ -299,4 +299,12 @@ object KeyPreset {
         InputModeSwitcher.USER_KEYCODE_PASTE to android.R.id.paste,
     )
 
+    /** 字母键下滑触发编辑操作：z=全选, x=剪切, c=复制, v=粘贴 */
+    val slideDownEditPreset: Map<Int, Int> = hashMapOf(
+        KeyEvent.KEYCODE_Z to InputModeSwitcher.USER_KEYCODE_SELECT_ALL,
+        KeyEvent.KEYCODE_X to InputModeSwitcher.USER_KEYCODE_CUT,
+        KeyEvent.KEYCODE_C to InputModeSwitcher.USER_KEYCODE_COPY,
+        KeyEvent.KEYCODE_V to InputModeSwitcher.USER_KEYCODE_PASTE,
+    )
+
 }

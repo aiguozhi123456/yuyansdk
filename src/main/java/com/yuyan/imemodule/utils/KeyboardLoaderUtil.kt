@@ -510,6 +510,7 @@ class KeyboardLoaderUtil private constructor() {
             val labels = keyPreset[code]
             softKeys.add(SoftKey(code = code, label = labels?.getOrNull(0) ?: "", labelSmall = labels?.getOrNull(1) ?: "", keyMnemonic = keyMnemonicPreset[code] ?: "").apply {
                 widthF = 0.099f
+                slideDownCode = KeyPreset.slideDownEditPreset[code] ?: 0
             })
         }
         return softKeys.toTypedArray()
@@ -522,6 +523,7 @@ class KeyboardLoaderUtil private constructor() {
             val labels = keyPreset[code]
             softKeys.add(SoftKey(code = code, label = labels?.getOrNull(0) ?: "", labelSmall = labels?.getOrNull(1) ?: "", keyMnemonic = labels?.getOrNull(2) ?: "").apply {
                 widthF = 0.099f
+                slideDownCode = KeyPreset.slideDownEditPreset[code] ?: 0
             })
         }
         return softKeys.toTypedArray()

@@ -247,6 +247,15 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
                 removeMessages()
                 mService?.responseLongKeyEvent(Pair(PopupMenuMode.Text, keyLableSmall))
                 result = true
+            } else if (isVertical && distanceY < 0 && relDiffY > symbolSlideUp && mCurrentKey?.slideDownCode != 0) {   // 向下滑动
+                lastEventX = currentX
+                lastEventY = currentY
+                lastEventActionIndex = currentEvent.actionIndex
+                mLongPressKey = true
+                removeMessages()
+                mAbortKey = true
+                mService?.responseKeyEvent(SoftKey(mCurrentKey!!.slideDownCode))
+                result = true
             }
         } else {  // 菜单
             if (isVertical && relDiffY > symbolSlideUp * 2) {   // 向上滑动
