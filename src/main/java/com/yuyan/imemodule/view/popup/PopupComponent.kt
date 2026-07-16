@@ -66,6 +66,14 @@ class PopupComponent private constructor(){
         showingEntryUi = popup
     }
 
+    fun showSlideDownPopup(content: String, bounds: Rect) {
+        dismissPopup()
+        showPopup(
+            content,
+            Rect(bounds.left, bounds.top + bounds.height(), bounds.right, bounds.bottom + bounds.height())
+        )
+    }
+
     fun showKeyboard(label: String, labelSmall: String, bounds: Rect) {
         showingEntryUi?.setText("") ?: showPopup("", bounds)
         var labels =  (PopupSmallPreset[labelSmall] ?: emptyArray<String>()).plus(PopupPreset[label] ?: emptyArray())

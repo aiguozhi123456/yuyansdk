@@ -307,4 +307,11 @@ object KeyPreset {
         KeyEvent.KEYCODE_V to InputModeSwitcher.USER_KEYCODE_PASTE,
     )
 
+    val slideDownEditPopupPreset: Map<Int, String> = hashMapOf(
+        InputModeSwitcher.USER_KEYCODE_SELECT_ALL to "☑️",
+        InputModeSwitcher.USER_KEYCODE_CUT to "✂️",
+        InputModeSwitcher.USER_KEYCODE_COPY to "📑",
+        InputModeSwitcher.USER_KEYCODE_PASTE to "📋",
+    )
+
 }

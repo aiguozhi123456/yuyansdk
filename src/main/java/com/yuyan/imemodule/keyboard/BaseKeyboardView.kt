@@ -223,6 +223,7 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
         val symbolSlideUp = EnvironmentSingleton.instance.heightForCandidatesArea / when(ThemeManager.prefs.symbolSlideUpMod.getValue()){
             KeyboardSymbolSlideUpMod.SHORT -> 3;KeyboardSymbolSlideUpMod.MEDIUM -> 2;else -> 1
         }
+        val editSlideDown = minOf(symbolSlideUp, mCurrentKey?.height()?.div(4) ?: symbolSlideUp)
         val spaceSwipeMoveCursorSpeed = AppPrefs.getInstance().keyboardSetting.spaceSwipeMoveCursorSpeed.getValue()
         if (!isVertical && relDiffX > spaceSwipeMoveCursorSpeed) {  // 左右滑动
             val isSwipeKey = mCurrentKey?.code == KeyEvent.KEYCODE_SPACE || mCurrentKey?.code == KeyEvent.KEYCODE_0
@@ -247,14 +248,17 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
                 removeMessages()
                 mService?.responseLongKeyEvent(Pair(PopupMenuMode.Text, keyLableSmall))
                 result = true
-            } else if (isVertical && distanceY < 0 && relDiffY > symbolSlideUp && mCurrentKey?.slideDownCode != 0) {   // 向下滑动
+            } else if (isVertical && distanceY < 0 && relDiffY > editSlideDown && mCurrentKey?.slideDownCode != 0) {   // 向下滑动
                 lastEventX = currentX
                 lastEventY = currentY
                 lastEventActionIndex = currentEvent.actionIndex
                 mLongPressKey = true
                 removeMessages()
                 mAbortKey = true
-                mService?.responseKeyEvent(SoftKey(mCurrentKey!!.slideDownCode))
+                val slideDownCode = mCurrentKey!!.slideDownCode
+                val bounds = Rect(mCurrentKey!!.mLeft, mCurrentKey!!.mTop, mCurrentKey!!.mRight, mCurrentKey!!.mBottom)
+                popupComponent.showSlideDownPopup(KeyPreset.slideDownEditPopupPreset[slideDownCode].orEmpty(), bounds)
+                mService?.responseKeyEvent(SoftKey(slideDownCode))
                 result = true
             }
         } else {  // 菜单
