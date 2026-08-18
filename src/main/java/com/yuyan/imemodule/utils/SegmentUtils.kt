@@ -5,8 +5,10 @@ package com.yuyan.imemodule.utils
  */
 private val URL_PATTERN = Regex(
     // 前缀 https:// http:// 或 www.（前面不能是 ASCII 字母/数字/_/.，防止匹配 awww.x）
+    // 注意：必须用显式 ASCII 类而非 \w —— Android 的 ICU 正则中 \w 是 Unicode 感知的（汉字属于 \w），
+    // 会导致 "看https://..." 的负前瞻失败、URL 掉进分词器被切碎
     // URL 主体：非空白、非汉字(\u4e00-\u9fff)、非中文标点(\u3000-\u303f 全角标点 \uff00-\uffef)
-    "(?i)(?<![\\w.])(?:https?://|www\\.)[^\\s\\u4e00-\\u9fff\\u3000-\\u303f\\uff00-\\uffef]+"
+    "(?i)(?<![A-Za-z0-9_.])(?:https?://|www\\.)[^\\s\\u4e00-\\u9fff\\u3000-\\u303f\\uff00-\\uffef]+"
 )
 
 // URL 尾部需剥离的半角标点（避免吞掉句子标点，如 "见https://a.com," 的逗号）
