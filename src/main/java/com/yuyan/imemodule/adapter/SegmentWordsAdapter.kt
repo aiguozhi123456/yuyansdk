@@ -42,14 +42,11 @@ class SegmentWordsAdapter(
         }
         val textView = EmojiTextView(context).apply {
             id = R.id.clipboard_adapter_content
-            // 长词块（URL 等）换行完整显示，最多 4 行，超长才截断省略
-            maxLines = 4
-            ellipsize = android.text.TextUtils.TruncateAt.END
+            // 单行显示；长 token（URL）用中间省略，头尾可见便于辨认
+            maxLines = 1
+            ellipsize = android.text.TextUtils.TruncateAt.MIDDLE
             gravity = Gravity.CENTER
             textSize = instance.candidateTextSize.toFloat()
-            val padH = dip2px(8)
-            val padV = dip2px(4)
-            setPadding(padH, padV, padH, padV)
             layoutParams = RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT
