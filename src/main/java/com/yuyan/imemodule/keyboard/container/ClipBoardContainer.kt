@@ -32,6 +32,7 @@ import com.yuyan.imemodule.keyboard.KeyboardManager
 import com.yuyan.imemodule.manager.layout.CustomGridLayoutManager
 import com.yuyan.imemodule.singleton.EnvironmentSingleton.Companion.instance
 import com.yuyan.imemodule.utils.segmentText
+import com.yuyan.imemodule.utils.mergeTokens
 import com.yuyan.imemodule.utils.clipboardManager
 import com.yuyan.imemodule.utils.toast
 import splitties.dimensions.dp
@@ -232,9 +233,7 @@ class ClipBoardContainer(context: Context, inputView: InputView) : BaseContainer
             mContext.toast(R.string.segment_no_selection)
             return
         }
-        val merged = segmentTokens.withIndex()
-            .filter { selected.contains(it.index) }
-            .joinToString("") { it.value }
+        val merged = mergeTokens(segmentTokens, selected)
         Launcher.instance.context.clipboardManager.setPrimaryClip(
             android.content.ClipData.newPlainText("segment", merged)
         )
