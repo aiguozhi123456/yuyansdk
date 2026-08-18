@@ -240,6 +240,8 @@ class ClipBoardContainer(context: Context, inputView: InputView) : BaseContainer
         )
         mContext.toast(R.string.segment_copied)
         segmentAdapter?.clearSelection()
+        // 与点击剪贴板条目行为一致：未锁定时返回键盘，锁定键可保持面板
+        if(!CustomConstant.lockClipBoardEnable) KeyboardManager.instance.switchKeyboard()
     }
 
     fun getMenuMode():SkbMenuMode? {
