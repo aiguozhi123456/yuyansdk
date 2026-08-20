@@ -511,7 +511,7 @@ class InputView(context: Context, private val service: ImeService) : LifecycleRe
         if (candidate?.comment == "📋") {
             commitDecInfoText(candidate.text)
         } else if (candidate != null && candidate.comment == "" && DecodingInfo.isAssociate
-            && InputModeSwitcher.isEnglish && CustomEngine.EMAIL_DOMAINS.contains(candidate.text)) {
+            && CustomEngine.EMAIL_DOMAINS.contains(candidate.text)) {
             commitEmailDomain(candidate.text)
         } else {
             val choice = DecodingInfo.chooseDecodingCandidate(candId)
@@ -754,14 +754,15 @@ class InputView(context: Context, private val service: ImeService) : LifecycleRe
     fun onUpdateSelection(oldSelStart: Int, oldSelEnd: Int, newSelStart: Int, newSelEnd: Int, candidatesEnd: Int) {
         selStart = newSelStart
         selEnd = newSelEnd
-        if (InputModeSwitcher.isEnglish ) {
-            val emails = if (emailSuggestion && !isAddPhrases)
-                CustomEngine.emailSuggestions(service.getTextBeforeCursor(100)) else emptyList()
+        if (emailSuggestion && !isAddPhrases) {
+            val emails = CustomEngine.emailSuggestions(service.getTextBeforeCursor(100))
             if (emails.isNotEmpty()) {
                 DecodingInfo.cacheCandidates(emails.map { CandidateListItem("", it) }.toTypedArray(), true)
                 oldCandidatesEnd = candidatesEnd
                 return
             }
+        }
+        if (InputModeSwitcher.isEnglish ) {
             if (oldCandidatesEnd == candidatesEnd || DecodingInfo.isAssociate) {
                 service.finishComposingText()
                 resetToIdleState()
