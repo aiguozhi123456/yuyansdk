@@ -58,12 +58,12 @@ object CustomEngine {
         "sina.com", "sohu.com", "139.com", "189.cn", "aliyun.com", "hotmail.com"
     )
 
-    // 邮箱后缀匹配正则：本地部分（任意字符，支持中文）@域名部分（域名可含字母数字.-）
-    private val emailEndPattern = "(.+)@([A-Za-z0-9.-]*)\\z".toRegex()
+    // 邮箱后缀匹配正则：本地部分（任意字符，可为空，支持中文）@域名部分（域名可含字母数字.-）
+    private val emailEndPattern = "(.*)@([A-Za-z0-9.-]*)\\z".toRegex()
 
     /**
      * 解析文本末尾的邮箱输入
-     * @return Pair(localPart, partialDomain) 或 null（无匹配或本地部分为空）
+     * @return Pair(localPart, partialDomain) 或 null（无@或域名部分超长）
      */
     fun parseEmailAtEnd(text: String): Pair<String, String>? {
         val match = emailEndPattern.find(text) ?: return null
